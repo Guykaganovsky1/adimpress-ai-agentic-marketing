@@ -144,7 +144,7 @@ const Hero = () => {
         initial={{ scale: 1.2, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 pt-20 md:pt-24"
+        className="relative z-10 pt-4 md:pt-24"
       >
         <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#F27D26] mb-6 block">
           AI-Powered Digital Agency
