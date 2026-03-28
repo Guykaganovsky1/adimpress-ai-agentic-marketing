@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#050505"/>
+
+  <!-- Orange accent line -->
+  <rect x="0" y="0" width="8" height="630" fill="#F27D26"/>
+
+  <!-- Grid lines (subtle) -->
+  <line x1="0" y1="210" x2="1200" y2="210" stroke="#ffffff" stroke-opacity="0.04"/>
+  <line x1="0" y1="420" x2="1200" y2="420" stroke="#ffffff" stroke-opacity="0.04"/>
+  <line x1="400" y1="0" x2="400" y2="630" stroke="#ffffff" stroke-opacity="0.04"/>
+  <line x1="800" y1="0" x2="800" y2="630" stroke="#ffffff" stroke-opacity="0.04"/>
+
+  <!-- Orange "A" logo mark (large, top-left area) -->
+  <g transform="translate(80, 60) scale(2.2)">
+    <path d="M60 10 L110 130 H90 L82 108 H38 L30 130 H10 L60 10Z M46 94 H74 L60 54 Z" fill="#F27D26" opacity="0.15"/>
+  </g>
+
+  <!-- Main headline -->
+  <text x="80" y="260" font-family="Arial Black, Arial, sans-serif" font-size="72" font-weight="900" fill="#ffffff" letter-spacing="-2">YOUR WEBSITE</text>
+  <text x="80" y="350" font-family="Arial Black, Arial, sans-serif" font-size="72" font-weight="900" fill="#F27D26" letter-spacing="-2">SHOULD MAKE</text>
+  <text x="80" y="440" font-family="Arial Black, Arial, sans-serif" font-size="72" font-weight="900" fill="#ffffff" letter-spacing="-2">YOU MONEY.</text>
+
+  <!-- Tagline -->
+  <text x="80" y="510" font-family="Arial, sans-serif" font-size="22" fill="#ffffff" opacity="0.5" letter-spacing="4">AI-POWERED DIGITAL AGENCY</text>
+
+  <!-- Brand name -->
+  <text x="80" y="570" font-family="Arial Black, Arial, sans-serif" font-size="28" font-weight="900" fill="#F27D26" letter-spacing="-1" font-style="italic">ADIMPRESS</text>
+  <text x="250" y="570" font-family="Arial, sans-serif" font-size="18" fill="#ffffff" opacity="0.4">adimpress.com</text>
+
+  <!-- Right side decorative stats -->
+  <text x="900" y="240" font-family="Arial Black, Arial, sans-serif" font-size="96" font-weight="900" fill="#F27D26" opacity="0.9" text-anchor="middle">4–12x</text>
+  <text x="900" y="285" font-family="Arial, sans-serif" font-size="16" fill="#ffffff" opacity="0.4" text-anchor="middle" letter-spacing="3">ROI DELIVERED</text>
+
+  <line x1="800" y1="320" x2="1100" y2="320" stroke="#F27D26" stroke-opacity="0.2" stroke-width="1"/>
+
+  <text x="900" y="390" font-family="Arial Black, Arial, sans-serif" font-size="72" font-weight="900" fill="#ffffff" opacity="0.9" text-anchor="middle">40+</text>
+  <text x="900" y="430" font-family="Arial, sans-serif" font-size="16" fill="#ffffff" opacity="0.4" text-anchor="middle" letter-spacing="3">SITES LAUNCHED</text>
+
+  <line x1="800" y1="460" x2="1100" y2="460" stroke="#F27D26" stroke-opacity="0.2" stroke-width="1"/>
+
+  <text x="900" y="530" font-family="Arial Black, Arial, sans-serif" font-size="72" font-weight="900" fill="#ffffff" opacity="0.9" text-anchor="middle">&lt;2s</text>
+  <text x="900" y="570" font-family="Arial, sans-serif" font-size="16" fill="#ffffff" opacity="0.4" text-anchor="middle" letter-spacing="3">LOAD TIME</text>
+</svg>

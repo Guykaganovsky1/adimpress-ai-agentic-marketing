@@ -121,7 +121,8 @@ const Hero = () => {
 
   return (
     <section
-      id="top"
+      id="main-content"
+      tabIndex={-1}
       className="min-h-screen bg-[#050505] text-white flex flex-col justify-center px-6 md:px-8 relative overflow-hidden"
     >
       <motion.div
@@ -715,6 +716,10 @@ const ROICalculator = () => {
                 step="500"
                 value={budget}
                 onChange={(e) => setBudget(parseInt(e.target.value))}
+                aria-label="Monthly marketing budget"
+                aria-valuemin={1000}
+                aria-valuemax={50000}
+                aria-valuenow={budget}
                 className="w-full h-1 bg-white/10 appearance-none cursor-pointer accent-[#F27D26]"
               />
             </div>
@@ -1318,7 +1323,7 @@ const Work = () => (
             <div className="flex justify-between items-end">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#F27D26]">{w.category}</span>
-                <h4 className="text-4xl font-black uppercase tracking-tight">{w.title}</h4>
+                <h3 className="text-4xl font-black uppercase tracking-tight">{w.title}</h3>
               </div>
               <ArrowUpRight className="w-8 h-8 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" />
             </div>
@@ -1494,7 +1499,9 @@ const Footer = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In production: POST to your API / email service
+    const subject = encodeURIComponent(`New enquiry from ${form.name}`);
+    const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`);
+    window.location.href = `mailto:hello@adimpress.com?subject=${subject}&body=${body}`;
     setSent(true);
   };
 
@@ -1519,16 +1526,16 @@ const Footer = () => {
           <div className="space-y-6 opacity-60">
             <div>
               <div className="text-[10px] font-bold uppercase tracking-widest mb-1">Email</div>
-              <a href="mailto:hello@adimpress.ai" className="hover:text-[#F27D26] transition-colors">
-                hello@adimpress.ai
+              <a href="mailto:hello@adimpress.com" className="hover:text-[#F27D26] transition-colors">
+                hello@adimpress.com
               </a>
             </div>
             <div>
               <div className="text-[10px] font-bold uppercase tracking-widest mb-2">Socials</div>
               <div className="flex gap-6 text-sm font-bold uppercase">
-                <a href="#" className="hover:text-[#F27D26] transition-colors">Instagram</a>
-                <a href="#" className="hover:text-[#F27D26] transition-colors">Twitter</a>
-                <a href="#" className="hover:text-[#F27D26] transition-colors">LinkedIn</a>
+                <a href="https://www.instagram.com/adimpress" target="_blank" rel="noopener noreferrer" className="hover:text-[#F27D26] transition-colors">Instagram</a>
+                <a href="https://twitter.com/adimpress" target="_blank" rel="noopener noreferrer" className="hover:text-[#F27D26] transition-colors">Twitter</a>
+                <a href="https://www.linkedin.com/company/adimpress" target="_blank" rel="noopener noreferrer" className="hover:text-[#F27D26] transition-colors">LinkedIn</a>
               </div>
             </div>
           </div>
@@ -1647,7 +1654,7 @@ const AIChat = () => {
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: 'ai', text: "Something went wrong on our end. Email us at hello@adimpress.ai and we'll reply fast." },
+        { role: 'ai', text: "Something went wrong on our end. Email us at hello@adimpress.com and we'll reply fast." },
       ]);
     } finally {
       setIsLoading(false);
@@ -1746,6 +1753,12 @@ const AIChat = () => {
 export default function App() {
   return (
     <div className="bg-[#050505] selection:bg-[#F27D26] selection:text-white relative">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-[#F27D26] focus:text-white focus:px-4 focus:py-2 focus:font-bold focus:uppercase focus:tracking-widest focus:text-xs"
+      >
+        Skip to main content
+      </a>
       <BackgroundAnimation />
       <NeuralNetwork />
       <Navbar />

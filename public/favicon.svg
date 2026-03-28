@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Dark background -->
+  <rect width="64" height="64" rx="12" fill="#050505"/>
+  <!-- Orange "A" lettermark -->
+  <path d="M32 12 L50 52 H42 L38 42 H26 L22 52 H14 L32 12Z M29 36 H35 L32 26 Z" fill="#F27D26"/>
+</svg>
