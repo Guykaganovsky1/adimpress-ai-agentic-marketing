@@ -1469,7 +1469,7 @@ const QASection = () => {
           <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#F27D26] mb-4 block">
             Common questions
           </span>
-          <h2 className="text-7xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85]">
+          <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85]">
             GOOD <br /> QUESTIONS.
           </h2>
         </motion.div>
