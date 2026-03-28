@@ -39,7 +39,15 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const getAI = (() => {
+  let instance: GoogleGenAI | null = null;
+  return () => {
+    if (!instance && process.env.GEMINI_API_KEY) {
+      instance = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    }
+    return instance;
+  };
+})();
 
 // ─── Navbar ──────────────────────────────────────────────────────────────────
 
@@ -90,8 +98,15 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 bg-black z-40 flex flex-col items-center justify-center p-8 md:hidden"
+            className="fixed inset-0 bg-black/20 z-40 flex flex-col items-center justify-center p-8 md:hidden"
           >
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              aria-label="Close menu"
+              className="absolute top-6 right-6 p-2 text-white hover:text-[#F27D26] transition-colors"
+            >
+              <X className="w-7 h-7" />
+            </button>
             <div className="flex flex-col items-center gap-8 text-2xl font-black uppercase tracking-tighter italic">
               <a href="#services" onClick={() => setIsMenuOpen(false)} className="hover:text-[#F27D26]">Services</a>
               <a href="#why" onClick={() => setIsMenuOpen(false)} className="hover:text-[#F27D26]">Why Us</a>
@@ -519,6 +534,8 @@ const NeuralCreativeLab = () => {
     setIsLoading(true);
     setError(null);
     try {
+      const ai = getAI();
+      if (!ai) throw new Error('AI not configured');
       const textResponse = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: `Generate a compelling marketing concept for: ${prompt}. Return JSON with "headline" (punchy, max 8 words) and "copy" (benefit-focused, max 20 words).`,
@@ -1638,6 +1655,8 @@ const AIChat = () => {
     setIsLoading(true);
 
     try {
+      const ai = getAI();
+      if (!ai) throw new Error('AI not configured');
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: input,
