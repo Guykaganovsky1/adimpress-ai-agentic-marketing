@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { GoogleGenAI } from "@google/genai";
 import {
@@ -68,6 +68,8 @@ const Navbar = () => {
         </a>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMenuOpen}
           className="md:hidden p-2 hover:text-[#F27D26] transition-colors"
         >
           {isMenuOpen ? (
@@ -445,6 +447,21 @@ const BackgroundAnimation = () => {
 
 // ─── Neural Network (floating visual) ────────────────────────────────────────
 
+// Hoisted to module level — stable across renders (react-best-practices: rendering-hoist-jsx)
+const NEURAL_CIRCLES = Array.from({ length: 20 }, () => ({
+  cx: Math.random() * 100,
+  cy: Math.random() * 100,
+  duration: Math.random() * 3 + 2,
+}));
+
+const NEURAL_LINES = Array.from({ length: 15 }, () => ({
+  x1: Math.random() * 100,
+  y1: Math.random() * 100,
+  x2: Math.random() * 100,
+  y2: Math.random() * 100,
+  duration: Math.random() * 5 + 5,
+}));
+
 const NeuralNetwork = () => {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 0.1, 0.1, 0]);
@@ -454,32 +471,33 @@ const NeuralNetwork = () => {
     <motion.div
       style={{ opacity, scale }}
       className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center"
+      aria-hidden="true"
     >
       <svg className="w-full h-full max-w-4xl max-h-4xl" viewBox="0 0 100 100">
-        {[...Array(20)].map((_, i) => (
+        {NEURAL_CIRCLES.map((c, i) => (
           <motion.circle
             key={i}
-            cx={Math.random() * 100}
-            cy={Math.random() * 100}
+            cx={c.cx}
+            cy={c.cy}
             r="0.5"
             fill="#F27D26"
             initial={{ opacity: 0 }}
             animate={{ opacity: [0.2, 0.5, 0.2] }}
-            transition={{ duration: Math.random() * 3 + 2, repeat: Infinity }}
+            transition={{ duration: c.duration, repeat: Infinity }}
           />
         ))}
-        {[...Array(15)].map((_, i) => (
+        {NEURAL_LINES.map((l, i) => (
           <motion.line
             key={i}
-            x1={Math.random() * 100}
-            y1={Math.random() * 100}
-            x2={Math.random() * 100}
-            y2={Math.random() * 100}
+            x1={l.x1}
+            y1={l.y1}
+            x2={l.x2}
+            y2={l.y2}
             stroke="#F27D26"
             strokeWidth="0.05"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 0.1 }}
-            transition={{ duration: Math.random() * 5 + 5, repeat: Infinity }}
+            transition={{ duration: l.duration, repeat: Infinity }}
           />
         ))}
       </svg>
@@ -659,6 +677,9 @@ const ROICalculator = () => {
 
   const monthlyLeads = Math.round(budget * 0.022);
   const annualRevenue = monthlyLeads * 12 * 2500; // avg deal $2,500
+  const annualRevenueFormatted = annualRevenue >= 1_000_000
+    ? `$${(annualRevenue / 1_000_000).toFixed(1)}M`
+    : `$${(annualRevenue / 1000).toFixed(0)}k`;
 
   return (
     <section id="roi" className="py-32 bg-[#050505] text-white border-y border-white/5">
@@ -707,7 +728,7 @@ const ROICalculator = () => {
               </div>
               <div className="p-6 bg-white/5 border border-white/10">
                 <div className="text-3xl font-black italic text-[#F27D26]">
-                  ${(annualRevenue / 1000).toFixed(0)}k
+                  {annualRevenueFormatted}
                 </div>
                 <div className="text-[10px] font-bold uppercase tracking-widest opacity-40 mt-1">
                   Est. Annual Revenue
@@ -921,7 +942,7 @@ const Process = () => (
             >
               <span className="text-4xl font-black italic text-[#F27D26]">{p.step}</span>
               <div>
-                <h4 className="text-2xl font-bold uppercase mb-2">{p.title}</h4>
+                <h3 className="text-2xl font-bold uppercase mb-2">{p.title}</h3>
                 <p className="opacity-60 font-light">{p.desc}</p>
               </div>
             </motion.div>
@@ -1288,6 +1309,8 @@ const Work = () => (
               <img
                 src={w.img}
                 alt={w.title}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
                 referrerPolicy="no-referrer"
               />
@@ -1308,27 +1331,30 @@ const Work = () => (
 
 // ─── Testimonials ─────────────────────────────────────────────────────────────
 
+// Hoisted: plain data, stable across renders (react-best-practices: rendering-hoist-jsx)
+const TESTIMONIALS = [
+  {
+    name: 'Sarah Chen',
+    role: 'CMO, Lumina Tech',
+    text: 'Adimpress didn\'t just build us a website — they built a growth machine. Leads up 3x in 90 days.',
+    img: 'https://picsum.photos/seed/sarah/100/100',
+  },
+  {
+    name: 'Marcus Thorne',
+    role: 'Founder, Aura Fashion',
+    text: 'We saw a 400% increase in conversion within the first 48 hours of launch. The SEO work alone paid for itself.',
+    img: 'https://picsum.photos/seed/marcus/100/100',
+  },
+  {
+    name: 'Elena Rodriguez',
+    role: 'Head of Growth, Nexus Bank',
+    text: 'Fixed pricing, real data, and they actually explain what they\'re doing. A refreshing change from every other agency.',
+    img: 'https://picsum.photos/seed/elena/100/100',
+  },
+];
+
 const Testimonials = () => {
-  const testimonials = [
-    {
-      name: 'Sarah Chen',
-      role: 'CMO, Lumina Tech',
-      text: 'Adimpress didn\'t just build us a website — they built a growth machine. Leads up 3x in 90 days.',
-      img: 'https://picsum.photos/seed/sarah/100/100',
-    },
-    {
-      name: 'Marcus Thorne',
-      role: 'Founder, Aura Fashion',
-      text: 'We saw a 400% increase in conversion within the first 48 hours of launch. The SEO work alone paid for itself.',
-      img: 'https://picsum.photos/seed/marcus/100/100',
-    },
-    {
-      name: 'Elena Rodriguez',
-      role: 'Head of Growth, Nexus Bank',
-      text: 'Fixed pricing, real data, and they actually explain what they\'re doing. A refreshing change from every other agency.',
-      img: 'https://picsum.photos/seed/elena/100/100',
-    },
-  ];
+  const testimonials = TESTIMONIALS;
 
   return (
     <section className="bg-white text-black py-32 px-8">
@@ -1381,12 +1407,10 @@ const Testimonials = () => {
 
 // ─── FAQ ──────────────────────────────────────────────────────────────────────
 
-const QASection = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
-  const faqs = [
-    {
-      q: 'How is Adimpress different from other agencies?',
+// Hoisted: plain data, stable across renders (react-best-practices: rendering-hoist-jsx)
+const FAQS = [
+  {
+    q: 'How is Adimpress different from other agencies?',
       a: 'Most agencies deliver a website and disappear. We build systems with measurable outcomes — every deliverable is tied to a business goal. We also use AI tools that most agencies haven\'t heard of, which means faster delivery and better results for the same budget.',
     },
     {
@@ -1405,7 +1429,11 @@ const QASection = () => {
       q: 'Do you offer white-label services for other agencies?',
       a: 'Yes. We offer 40–50% off retail pricing for agency partners, with Adimpress branding removed and your branding on all deliverables. We have capacity for 3–5 white-label partners. Get in touch to discuss.',
     },
-  ];
+];
+
+const QASection = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const faqs = FAQS;
 
   return (
     <section id="faq" className="bg-[#050505] text-white py-32 px-8">
