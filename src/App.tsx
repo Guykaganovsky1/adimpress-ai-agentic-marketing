@@ -1296,7 +1296,7 @@ const Pricing = () => {
 const Work = () => (
   <section id="work" className="bg-[#050505] text-white py-32 px-8">
     <div className="max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-8">
         <motion.h2
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
