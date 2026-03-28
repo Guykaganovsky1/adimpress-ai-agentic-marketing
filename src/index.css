@@ -3,5 +3,11 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+    overflow-x: hidden;
+  }
+
+  body {
+    overflow-x: hidden;
   }
 }
