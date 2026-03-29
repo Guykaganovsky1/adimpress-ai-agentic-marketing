@@ -140,25 +140,35 @@ const Hero = () => {
       tabIndex={-1}
       className="min-h-screen bg-[#050505] text-white flex flex-col justify-center px-6 md:px-8 relative overflow-hidden"
     >
-      <motion.div
-        initial={{ scale: 1.2, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 pt-4 md:pt-24"
-      >
-        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#F27D26] mb-6 block">
-          AI-Powered Digital Agency
-        </span>
-        <h1 className="text-[11vw] md:text-[9vw] leading-[0.85] font-black uppercase tracking-tighter md:-ml-[0.5vw]">
-          YOUR WEBSITE
-          <br />
-          SHOULD MAKE
-          <br />
-          <span className="text-transparent" style={{ WebkitTextStroke: '1px white' }}>
-            YOU MONEY.
+      <div className="relative z-10 pt-4 md:pt-24 flex items-center justify-between gap-8">
+        <motion.div
+          initial={{ scale: 1.2, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#F27D26] mb-6 block">
+            AI-Powered Digital Agency
           </span>
-        </h1>
-      </motion.div>
+          <h1 className="text-[11vw] md:text-[9vw] leading-[0.85] font-black uppercase tracking-tighter md:-ml-[0.5vw]">
+            YOUR WEBSITE
+            <br />
+            SHOULD MAKE
+            <br />
+            <span className="text-transparent" style={{ WebkitTextStroke: '1px white' }}>
+              YOU MONEY.
+            </span>
+          </h1>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="hidden md:block flex-shrink-0 w-[260px] lg:w-[340px] xl:w-[400px]"
+        >
+          <img src="/logo.svg" alt="Adimpress logo" className="w-full h-auto drop-shadow-2xl" />
+        </motion.div>
+      </div>
 
       <div className="mt-12 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 relative z-10">
         <motion.div
