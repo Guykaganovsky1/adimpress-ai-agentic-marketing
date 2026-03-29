@@ -140,7 +140,7 @@ const Hero = () => {
       tabIndex={-1}
       className="min-h-screen bg-[#050505] text-white flex flex-col justify-center px-6 md:px-8 relative overflow-hidden"
     >
-      <div className="relative z-10 pt-4 md:pt-24 flex items-center justify-between gap-8">
+      <div className="relative z-10 pt-4 md:pt-24 flex items-center justify-between gap-12">
         <motion.div
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
