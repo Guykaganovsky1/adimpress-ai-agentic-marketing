@@ -4,6 +4,8 @@
  */
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { PageFooter } from './PageShells';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { GoogleGenAI } from "@google/genai";
 import {
@@ -49,6 +51,58 @@ const getAI = (() => {
   };
 })();
 
+// ─── Homepage Pages Dropdown ──────────────────────────────────────────────────
+
+const PAGES_LINKS = [
+  { label: 'Services', to: '/services' },
+  { label: 'Agents', to: '/agents' },
+  { label: 'Case Studies', to: '/case-studies' },
+  { label: 'About', to: '/about' },
+  { label: 'FAQ', to: '/faq' },
+];
+
+const HomePagesDropdown = () => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-1 hover:text-[#F27D26] transition-colors"
+      >
+        Pages
+        <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-48 rounded-xl overflow-hidden shadow-2xl z-50" style={{ mixBlendMode: 'normal', backgroundColor: '#111111', border: '1px solid rgba(255,255,255,0.12)' }}>
+          {PAGES_LINKS.map(({ label, to }) => (
+            <Link
+              key={label}
+              to={to}
+              onClick={() => setOpen(false)}
+              className="block px-5 py-3 text-[10px] font-bold uppercase tracking-[0.2em] border-b last:border-0 transition-colors"
+              style={{ color: 'rgba(255,255,255,0.7)', borderColor: 'rgba(255,255,255,0.06)', mixBlendMode: 'normal' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // ─── Navbar ──────────────────────────────────────────────────────────────────
 
 const Navbar = () => {
@@ -59,8 +113,7 @@ const Navbar = () => {
       <div className="text-xl md:text-2xl font-black tracking-tighter italic">ADIMPRESS</div>
 
       <div className="hidden md:flex gap-12 text-[10px] font-bold uppercase tracking-[0.2em] opacity-80">
-        <a href="#services" className="hover:text-[#F27D26] transition-colors">Services</a>
-        <a href="#why" className="hover:text-[#F27D26] transition-colors">Why Us</a>
+        <HomePagesDropdown />
         <a href="#lab" className="hover:text-[#F27D26] transition-colors">AI Demo</a>
         <a href="#pricing" className="hover:text-[#F27D26] transition-colors">Pricing</a>
         <a href="#work" className="hover:text-[#F27D26] transition-colors">Work</a>
@@ -98,7 +151,7 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 bg-black/20 z-40 flex flex-col items-center justify-center p-8 md:hidden"
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center p-8 md:hidden" style={{ backgroundColor: '#050505', mixBlendMode: 'normal' }}
           >
             <button
               onClick={() => setIsMenuOpen(false)}
@@ -108,12 +161,12 @@ const Navbar = () => {
               <X className="w-7 h-7" />
             </button>
             <div className="flex flex-col items-center gap-8 text-2xl font-black uppercase tracking-tighter italic">
-              <a href="#services" onClick={() => setIsMenuOpen(false)} className="hover:text-[#F27D26]">Services</a>
-              <a href="#why" onClick={() => setIsMenuOpen(false)} className="hover:text-[#F27D26]">Why Us</a>
+              {PAGES_LINKS.map(({ label, to }) => (
+                <Link key={label} to={to} onClick={() => setIsMenuOpen(false)} className="hover:text-[#F27D26]">{label}</Link>
+              ))}
               <a href="#lab" onClick={() => setIsMenuOpen(false)} className="hover:text-[#F27D26]">AI Demo</a>
               <a href="#pricing" onClick={() => setIsMenuOpen(false)} className="hover:text-[#F27D26]">Pricing</a>
               <a href="#work" onClick={() => setIsMenuOpen(false)} className="hover:text-[#F27D26]">Work</a>
-              <a href="#faq" onClick={() => setIsMenuOpen(false)} className="hover:text-[#F27D26]">FAQ</a>
               <a
                 href="#contact"
                 onClick={() => setIsMenuOpen(false)}
@@ -951,17 +1004,17 @@ const Process = () => (
             {
               step: '01',
               title: 'Discovery',
-              desc: 'We dig into your business, your goals, and your competitors. No templates, no shortcuts.',
+              desc: 'We start with a deep-dive into your business — your goals, your audience, and your competitors. We map out exactly what\'s holding you back and what needs to be built. No assumptions, no cookie-cutter playbooks.',
             },
             {
               step: '02',
               title: 'Build',
-              desc: 'We build fast, clean, and conversion-optimised. Every decision is tied to a business outcome.',
+              desc: 'Our AI-powered team moves fast without cutting corners. Every page, campaign, and piece of content is built around one question: will this convert? Design, copy, and tech decisions are all tied to measurable outcomes.',
             },
             {
               step: '03',
               title: 'Launch & Optimize',
-              desc: 'We go live, measure everything, and keep improving. Your success is our scoreboard.',
+              desc: 'Going live is just the beginning. We monitor performance in real time, run continuous A/B tests, and iterate based on data — not opinions. Your results compound over time because we never stop improving.',
             },
           ].map((p, i) => (
             <motion.div
@@ -1361,81 +1414,133 @@ const Work = () => (
   </section>
 );
 
+// ─── Case Study ───────────────────────────────────────────────────────────────
+
+const CaseStudy = () => (
+  <section className="bg-[#050505] py-16 px-8">
+    <div className="max-w-7xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="bg-[#F27D26] rounded-3xl p-10 md:p-14 flex flex-col md:flex-row gap-12 items-start"
+      >
+        {/* Left: text content */}
+        <div className="flex-1 space-y-6">
+          <div className="space-y-1">
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/60">
+              Featured Case Study
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white">TechFlow SaaS</h2>
+          </div>
+
+          <div className="space-y-3 text-white text-sm leading-relaxed">
+            <p>
+              <span className="font-bold">Challenge:</span> Zero organic traffic. 1.2x Google Ads ROAS. CAC killing growth.
+            </p>
+            <p>
+              <span className="font-bold">Solution:</span> SEO content engine + paid campaign restructure by Adimpress AI agents.
+            </p>
+          </div>
+
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 text-white font-bold text-sm hover:gap-4 transition-all"
+          >
+            Read full case study <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
+
+        {/* Right: stats + tag */}
+        <div className="flex flex-col gap-4 md:items-end w-full md:w-auto">
+          <span className="self-start md:self-end border border-white/30 text-white/80 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+            B2B SaaS
+          </span>
+          <div className="grid grid-cols-3 gap-3 w-full md:w-auto">
+            {[
+              { value: '50K+', label: 'Monthly Visitors' },
+              { value: '4.7x', label: 'ROAS' },
+              { value: '62%', label: 'CAC Reduced' },
+            ].map((stat, i) => (
+              <div
+                key={i}
+                className="bg-white/15 rounded-2xl p-5 text-center min-w-[100px]"
+              >
+                <div className="text-2xl md:text-3xl font-black text-white">{stat.value}</div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-white/70 mt-1">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  </section>
+);
+
 // ─── Testimonials ─────────────────────────────────────────────────────────────
 
 // Hoisted: plain data, stable across renders (react-best-practices: rendering-hoist-jsx)
 const TESTIMONIALS = [
   {
     name: 'Sarah Chen',
-    role: 'CMO, Lumina Tech',
-    text: 'Adimpress didn\'t just build us a website — they built a growth machine. Leads up 3x in 90 days.',
-    img: 'https://picsum.photos/seed/sarah/100/100',
+    role: 'CMO, TechFlow',
+    text: 'They built our entire content engine in a week. We went from 0 to 50,000 monthly visitors in 4 months.',
   },
   {
-    name: 'Marcus Thorne',
-    role: 'Founder, Aura Fashion',
-    text: 'We saw a 400% increase in conversion within the first 48 hours of launch. The SEO work alone paid for itself.',
-    img: 'https://picsum.photos/seed/marcus/100/100',
+    name: 'Marcus Reid',
+    role: 'Founder, DataPulse',
+    text: 'Finally an agency that ships. Our Google Ads ROAS went from 1.2x to 4.7x in 60 days.',
   },
   {
-    name: 'Elena Rodriguez',
-    role: 'Head of Growth, Nexus Bank',
-    text: 'Fixed pricing, real data, and they actually explain what they\'re doing. A refreshing change from every other agency.',
-    img: 'https://picsum.photos/seed/elena/100/100',
+    name: 'Priya Sharma',
+    role: 'Head of Growth, NovaBrand',
+    text: 'The AI agents caught a technical SEO issue that 3 human agencies missed. Paid dependency dropped 35%.',
   },
 ];
 
-const Testimonials = () => {
-  const testimonials = TESTIMONIALS;
+const Testimonials = () => (
+  <section className="bg-white text-black py-32 px-8">
+    <div className="max-w-7xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mb-20"
+      >
+        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#F27D26] mb-4 block">
+          What clients say
+        </span>
+        <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85]">
+          PROOF, NOT PROMISES
+        </h2>
+      </motion.div>
 
-  return (
-    <section className="bg-white text-black py-32 px-8">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-24"
-        >
-          <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#F27D26] mb-4 block">
-            Client results
-          </span>
-          <h2 className="text-5xl md:text-9xl font-black uppercase tracking-tighter leading-[0.85]">
-            RESULTS THAT <br /> SPEAK FOR <br /> THEMSELVES.
-          </h2>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-1 border-t border-black">
-          {testimonials.map((t, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="p-12 border-r border-b border-black relative group hover:bg-black hover:text-white transition-all duration-500"
-            >
-              <Quote className="absolute top-8 right-8 w-12 h-12 text-[#F27D26] opacity-20" />
-              <p className="text-xl font-light italic mb-12 opacity-80 leading-relaxed">"{t.text}"</p>
-              <div className="flex items-center gap-4">
-                <img
-                  src={t.img}
-                  alt={t.name}
-                  className="w-12 h-12 rounded-full grayscale"
-                  referrerPolicy="no-referrer"
-                />
-                <div>
-                  <div className="font-bold uppercase text-sm tracking-widest">{t.name}</div>
-                  <div className="text-[10px] font-bold uppercase tracking-widest text-[#F27D26]">{t.role}</div>
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+        {TESTIMONIALS.map((t, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.15 }}
+            className="border border-black/10 p-10"
+          >
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-10 h-10 rounded-full bg-[#F27D26] flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-black text-sm">{t.name[0]}</span>
               </div>
-            </motion.div>
-          ))}
-        </div>
+              <div>
+                <div className="font-black uppercase text-sm tracking-widest">{t.name}</div>
+                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#F27D26]">{t.role}</div>
+              </div>
+            </div>
+            <p className="text-base font-light italic opacity-70 leading-relaxed">"{t.text}"</p>
+          </motion.div>
+        ))}
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 // ─── FAQ ──────────────────────────────────────────────────────────────────────
 
@@ -1630,14 +1735,6 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8">
-        <a href="#top" className="text-4xl font-black tracking-tighter italic hover:text-[#F27D26] transition-colors">
-          ADIMPRESS
-        </a>
-        <div className="text-[10px] font-bold uppercase tracking-widest opacity-40">
-          © 2026 Adimpress. All rights reserved. AI-powered. Human-reviewed.
-        </div>
-      </div>
     </footer>
   );
 };
@@ -1801,9 +1898,11 @@ export default function App() {
       <Process />
       <Pricing />
       <Work />
+      <CaseStudy />
       <Testimonials />
       <QASection />
       <Footer />
+      <PageFooter />
       <AIChat />
     </div>
   );
